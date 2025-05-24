@@ -15,7 +15,7 @@ static int swallowfloating    = 0;        /* 1 means swallow floating windows by
 static int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
-static char *fonts[]          = { "monospace:size=10", "JoyPixels:pixelsize=10:antialias=true:autohint=true"  };
+static char *fonts[]          = { "monospace:size=10", "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true"  };
 static char normbgcolor[]           = "#222222";
 static char normbordercolor[]       = "#444444";
 static char normfgcolor[]           = "#bbbbbb";
@@ -52,6 +52,7 @@ static const Rule rules[] = {
 	*/
 	/* class    instance      title       	 tags mask    isfloating   isterminal  noswallow  monitor */
 	{ "Gimp",     NULL,       NULL,       	    1 << 8,       0,           0,         0,        -1 },
+	{ NULL,      "ejercicios", NULL,       	    0,       0,           0,         0,        0 },
 	{ TERMCLASS,   NULL,       NULL,       	    0,            0,           1,         0,        -1 },
 	{ NULL,       NULL,       "Event Tester",   0,            0,           0,         1,        -1 },
 	{ NULL,      "spterm",    NULL,       	    SPTAG(0),     1,           1,         0,        -1 },
@@ -167,10 +168,11 @@ static Key keys[] = {
 	{ MODKEY,			XK_e,		spawn,		SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+12 dwmblocks; rmdir ~/.abook") },
 	{ MODKEY|ShiftMask,		XK_e,		spawn,		SHCMD("dmenuunicode") },
 	/* { MODKEY|ShiftMask,		XK_e,		spawn,		SHCMD(TERMINAL " -e abook -C ~/.config/abook/abookrc --datafile ~/.config/abook/addressbook") }, */
-	{ MODKEY,			XK_r,		spawn,		SHCMD(TERMINAL " -e lf") },
+	{ MODKEY,			XK_r,		spawn,		SHCMD(TERMINAL " -e lfub") },
 	{ MODKEY|ShiftMask,		XK_r,		spawn,		SHCMD(TERMINAL " -e htop") },
-	{ MODKEY,			XK_t,		setlayout,	{.v = &layouts[0]} }, /* tile */
-	{ MODKEY|ShiftMask,		XK_t,		setlayout,	{.v = &layouts[1]} }, /* bstack */
+	{ MODKEY,			XK_t,		spawn,		SHCMD(TERMINAL " -e trabajo") },
+	{ MODKEY|ShiftMask,		XK_t,		setlayout,	{.v = &layouts[0]} }, /* bstack */
+	/* { MODKEY|ShiftMask,		XK_t,		setlayout,	{.v = &layouts[1]} }, /1* bstack *1/ */
 	{ MODKEY,			XK_y,		spawn,		SHCMD("dalbum") },
 	{ MODKEY|ShiftMask,		XK_y,		setlayout,	{.v = &layouts[3]} }, /* dwindle */
 	{ MODKEY,			XK_u,		setlayout,	{.v = &layouts[4]} }, /* deck */
@@ -179,7 +181,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_i,		setlayout,	{.v = &layouts[7]} }, /* centeredfloatingmaster */
 	{ MODKEY,			XK_o,		incnmaster,     {.i = +1 } },
 	{ MODKEY|ShiftMask,		XK_o,		incnmaster,     {.i = -1 } },
-	{ MODKEY,			XK_p,			spawn,		SHCMD("mpc toggle") },
+	{ MODKEY,			XK_p,			spawn,		SHCMD("playerctl -p spotube play-pause") },
 	{ MODKEY|ShiftMask,		XK_p,			spawn,		SHCMD("passmenu") },
 	{ MODKEY,			XK_bracketleft,		spawn,		SHCMD("mpc seek -10") },
 	{ MODKEY|ShiftMask,		XK_bracketleft,		spawn,		SHCMD("mpc seek -60") },
@@ -190,16 +192,19 @@ static Key keys[] = {
 
 	{ MODKEY,			XK_g,		togglegaps,	{0} },
 	{ MODKEY|ShiftMask,		XK_g,		defaultgaps,	{0} },
-	{ MODKEY,			XK_s,		togglesticky,	{0} },
+	/* { MODKEY,			XK_s,		togglesticky,	{0} }, */
+	{ MODKEY,			XK_s,		spawn,		SHCMD("mscoredelete") },
 	{ MODKEY|ShiftMask,		XK_s,		spawn,		SHCMD("pomodoro") },
 	{ MODKEY,			XK_d,		spawn,          SHCMD("dmenu_run") },
 	{ MODKEY,			XK_f,		togglefullscr,	{0} },
 	{ MODKEY|ShiftMask,		XK_f,		setlayout,	{.v = &layouts[8]} },
-	{ MODKEY,			XK_a,		spawn,		SHCMD("ardour6") },
+	{ MODKEY,			XK_a,		spawn,		SHCMD("ardour8") },
 	{ MODKEY|ShiftMask,		XK_a,		togglescratch,	{.ui = 2} },
-	{ MODKEY,			XK_h,		setmfact,	{.f = -0.05} },
+	{ MODKEY,			XK_h,	focusmon,	{.i = -1 } },
+	{ MODKEY|ShiftMask,		XK_h,	tagmon,		{.i = -1 } },
 	/* J and K are automatically bound above in STACKEYS */
-	{ MODKEY,			XK_l,		setmfact,      	{.f = +0.05} },
+	{ MODKEY,			XK_l,	focusmon,	{.i = +1 } },
+	{ MODKEY|ShiftMask,		XK_l,	tagmon,		{.i = +1 } },
 	{ MODKEY,			XK_semicolon,	shiftview,	{ .i = 1 } },
 	{ MODKEY|ShiftMask,		XK_semicolon,	shifttag,	{ .i = 1 } },
 	{ MODKEY,			XK_apostrophe,	togglescratch,	{.ui = 1} },
@@ -211,47 +216,52 @@ static Key keys[] = {
 	/* { MODKEY|ShiftMask,		XK_z,		spawn,		SHCMD("") }, */
 	{ MODKEY,			XK_x,		incrgaps,	{.i = -3 } },
 	/* { MODKEY|ShiftMask,		XK_x,		spawn,		SHCMD("") }, */
-	{ MODKEY,			XK_c,		spawn,		SHCMD(TERMINAL " -e wyrd") },
-	/* { MODKEY|ShiftMask,		XK_c,		spawn,		SHCMD("") }, */
+	{ MODKEY,			XK_c,		spawn,		SHCMD("thunderbird -calendar") },
+	/* { MODKEY,			XK_c,		spawn,		SHCMD(TERMINAL " -e wyrd") }, */
+	{ MODKEY|ShiftMask,		XK_c,		spawn,		SHCMD("rw.py") },
 	/* V is automatically bound above in STACKKEYS */
 	{ MODKEY,			XK_b,		togglebar,	{0} },
-	/* { MODKEY|ShiftMask,		XK_b,		spawn,		SHCMD("") }, */
+	{ MODKEY|ShiftMask,		XK_b,		spawn,		SHCMD("marcador") },
 	{ MODKEY,			XK_n,		spawn,		SHCMD(TERMINAL " -e nvim -c VimwikiIndex") },
 	{ MODKEY|ShiftMask,		XK_n,		spawn,		SHCMD(TERMINAL " -e newsboat; pkill -RTMIN+6 dwmblocks") },
-	{ MODKEY,			XK_m,		spawn,		SHCMD(TERMINAL " -e ncmpcpp") },
+	{ MODKEY,			XK_m,		spawn,		SHCMD("spotube") },
 	{ MODKEY|ShiftMask,		XK_m,		spawn,		SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
 	{ MODKEY,			XK_v,		spawn,		SHCMD(TERMINAL " -e taskwarrior-tui") },
 	{ MODKEY|ShiftMask,		XK_v,		spawn,		SHCMD("ugrvpn") },
-	{ MODKEY,			XK_comma,	spawn,		SHCMD("mpc prev") },
+	{ MODKEY,			XK_comma,	spawn,		SHCMD("playerctl -p spotube previous") },
 	{ MODKEY|ShiftMask,		XK_comma,	spawn,		SHCMD("mpc seek 0%") },
-	{ MODKEY,			XK_period,	spawn,		SHCMD("mpc next") },
+	{ MODKEY,			XK_period,	spawn,		SHCMD("playerctl -p spotube next") },
 	{ MODKEY|ShiftMask,		XK_period,	spawn,		SHCMD("mpc repeat") },
+	{ MODKEY|ControlMask,		XK_plus,	spawn,		SHCMD("mpc volume +5") },
+	{ MODKEY|ControlMask,		XK_minus,	spawn,		SHCMD("mpc volume -5") },
 
-	{ MODKEY,			XK_Left,	focusmon,	{.i = -1 } },
-	{ MODKEY|ShiftMask,		XK_Left,	tagmon,		{.i = -1 } },
-	{ MODKEY,			XK_Right,	focusmon,	{.i = +1 } },
-	{ MODKEY|ShiftMask,		XK_Right,	tagmon,		{.i = +1 } },
+	{ MODKEY,			XK_Left,	setmfact,	{.f = -0.05} },
+	{ MODKEY,			XK_Right,		setmfact,      	{.f = +0.05} },
 
 	{ MODKEY,			XK_Page_Up,	shiftview,	{ .i = -1 } },
 	{ MODKEY|ShiftMask,		XK_Page_Up,	shifttag,	{ .i = -1 } },
 	{ MODKEY,			XK_Page_Down,	shiftview,	{ .i = +1 } },
 	{ MODKEY|ShiftMask,		XK_Page_Down,	shifttag,	{ .i = +1 } },
-	{ MODKEY,			XK_Insert,	spawn,		SHCMD("xdotool type $(cat ~/.local/share/larbs/snippets | dmenu -i -l 50 | cut -d' ' -f1)") },
+	{ MODKEY,			XK_Insert,	spawn,		SHCMD("xdotool type $(cat ~/.local/share/listamarcadores | dmenu -i -l 50 | cut -d' ' -f1)") },
 
-	/* { MODKEY,			XK_F1,		spawn,		SHCMD("") }, */
-	/*{ MODKEY,			XK_F2,		spawn,		SHCMD("") },*/
-	{ MODKEY,			XK_F3,		spawn,		SHCMD("displayselect") },
-	{ MODKEY,			XK_F4,		spawn,		SHCMD(TERMINAL " -e pulsemixer; kill -44 $(pidof dwmblocks)") },
-	/* { MODKEY,			XK_F5,		xrdb,		{.v = NULL } }, */
+	{ MODKEY,			XK_F1,		spawn,		SHCMD("whatsdesk") },
+	{ MODKEY,			XK_F2,		spawn,		SHCMD("telegram-desktop") },
+	{ MODKEY,			XK_F3,		spawn,		SHCMD("autorandr --change") },
+	{ MODKEY|ShiftMask,		XK_F3,		spawn,		SHCMD("displayselect") },
+	{ MODKEY,			XK_F4,		spawn,		SHCMD("lutris") },
+	{ MODKEY,			XK_F5,		spawn,		SHCMD("steam") },
 	{ MODKEY,			XK_F6,		spawn,		SHCMD("torwrap") },
 	{ MODKEY,			XK_F7,		spawn,		SHCMD("td-toggle") },
 	{ MODKEY,			XK_F8,		spawn,		SHCMD("mw -Y") },
+	{ MODKEY|ShiftMask,		XK_F8,		spawn,		SHCMD("nowifi") },
 	{ MODKEY,			XK_F9,		spawn,		SHCMD("dmenumount") },
 	{ MODKEY,			XK_F10,		spawn,		SHCMD("dmenuumount") },
-	{ MODKEY,			XK_F11,		spawn,		SHCMD("mpv --no-cache --no-osc --no-input-default-bindings --profile=low-latency --input-conf=/dev/null --title=webcam $WEBCAM") },
+	{ MODKEY,			XK_F11,		spawn,		SHCMD("mpv --untimed --no-cache --no-osc --no-input-default-bindings --profile=low-latency --input-conf=/dev/null --title=webcam $(ls /dev/video[0,2,4,6,8] | tail -n 1)") },
 	{ MODKEY,			XK_F12,		spawn,		SHCMD("remaps & notify-send \\\"⌨️ Keyboard remapping...\\\" \\\"Re-running keyboard defaults for any newly plugged-in keyboards.\\\"") },
+	{ MODKEY|ShiftMask,		XK_F12,		spawn,		SHCMD("kblayouts") },
 	{ MODKEY,			XK_space,	zoom,		{0} },
-	{ MODKEY|ShiftMask,		XK_space,	togglefloating,	{0} },
+	/*{ MODKEY|ShiftMask,		XK_space,	togglesticky,	{0} },*/
+	 { MODKEY|ShiftMask,		XK_space,	togglefloating,	{0} },
 
 	{ 0,				XK_Print,	spawn,		SHCMD("maim pic-full-$(date '+%y%m%d-%H%M-%S').png") },
 	{ ShiftMask,			XK_Print,	spawn,		SHCMD("maimpick") },
