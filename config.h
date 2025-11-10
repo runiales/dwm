@@ -244,7 +244,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_Page_Down,	shifttag,	{ .i = +1 } },
 	{ MODKEY,			XK_Insert,	spawn,		SHCMD("xdotool type $(cat ~/.local/share/listamarcadores | dmenu -i -l 50 | cut -d' ' -f1)") },
 
-	{ MODKEY,			XK_F1,		spawn,		SHCMD("whatsapp-for-linux") },
+	{ MODKEY,			XK_F1,		spawn,		SHCMD("whatsie") },
 	{ MODKEY,			XK_F2,		spawn,		SHCMD("telegram-desktop") },
 	{ MODKEY,			XK_F3,		spawn,		SHCMD("autorandr --change") },
 	{ MODKEY|ShiftMask,		XK_F3,		spawn,		SHCMD("displayselect") },
@@ -259,7 +259,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_F11,		spawn,		SHCMD("mpv --untimed --no-cache --no-osc --no-input-default-bindings --profile=low-latency --input-conf=/dev/null --title=webcam $(ls /dev/video[0,2,4,6,8] | tail -n 1)") },
 	{ MODKEY,			XK_F12,		spawn,		SHCMD("remaps & notify-send \\\"⌨️ Keyboard remapping...\\\" \\\"Re-running keyboard defaults for any newly plugged-in keyboards.\\\"") },
 	{ MODKEY|ShiftMask,		XK_F12,		spawn,		SHCMD("kblayouts") },
-	{ MODKEY,			XK_space,	zoom,		{0} },
+	// { MODKEY,			XK_space,	zoom,		{0} },
 	/*{ MODKEY|ShiftMask,		XK_space,	togglesticky,	{0} },*/
 	 { MODKEY|ShiftMask,		XK_space,	togglefloating,	{0} },
 
