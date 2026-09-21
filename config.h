@@ -246,7 +246,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_Insert,	spawn,		SHCMD("xdotool type $(cat ~/.local/share/listamarcadores | dmenu -i -l 50 | cut -d' ' -f1)") },
 
 	{ MODKEY,			XK_F1,		spawn,		SHCMD("whatsie") },
-	{ MODKEY,			XK_F2,		spawn,		SHCMD("telegram-desktop") },
+	{ MODKEY,			XK_F2,		spawn,		SHCMD("Telegram") },
 	{ MODKEY,			XK_F3,		spawn,		SHCMD("autorandr --change") },
 	{ MODKEY|ShiftMask,		XK_F3,		spawn,		SHCMD("displayselect") },
 	{ MODKEY,			XK_F4,		spawn,		SHCMD("lutris") },
