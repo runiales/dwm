@@ -198,7 +198,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_d,		spawn,          SHCMD("dmenu_run") },
 	{ MODKEY,			XK_f,		togglefullscr,	{0} },
 	{ MODKEY|ShiftMask,		XK_f,		setlayout,	{.v = &layouts[8]} },
-	{ MODKEY,			XK_a,		spawn,		SHCMD("ardour8") },
+	{ MODKEY,			XK_a,		spawn,		SHCMD("ardour9") },
 	{ MODKEY|ShiftMask,		XK_a,		togglescratch,	{.ui = 2} },
 	{ MODKEY,			XK_h,	focusmon,	{.i = -1 } },
 	{ MODKEY|ShiftMask,		XK_h,	tagmon,		{.i = -1 } },
