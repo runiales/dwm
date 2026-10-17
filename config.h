@@ -216,7 +216,7 @@ static Key keys[] = {
 	/* { MODKEY|ShiftMask,		XK_z,		spawn,		SHCMD("") }, */
 	{ MODKEY,			XK_x,		incrgaps,	{.i = -3 } },
 	/* { MODKEY|ShiftMask,		XK_x,		spawn,		SHCMD("") }, */
-	{ MODKEY,			XK_c,		spawn,		SHCMD("thunderbird -calendar") },
+	{ MODKEY,			XK_c,		spawn,		SHCMD("alacrity -e chroncal") },
 	/* { MODKEY,			XK_c,		spawn,		SHCMD(TERMINAL " -e wyrd") }, */
 	{ MODKEY|ShiftMask,		XK_c,		spawn,		SHCMD("rw.py") },
 	/* V is automatically bound above in STACKKEYS */
